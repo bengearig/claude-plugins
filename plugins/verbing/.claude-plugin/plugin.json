@@ -1,0 +1,22 @@
+{
+    "name": "verbing",
+    "description": "Appends custom verbs to Claude Code's action status spinner.",
+    "author": {
+        "name": "Benjamin Gearig",
+        "url": "https://github.com/bengearig"
+    },
+    "hooks": {
+        "SessionStart": [
+            {
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/verbing-activate.js\"",
+                        "timeout": 5,
+                        "statusMessage": "Loading custom verbs..."
+                    }
+                ]
+            }
+        ]
+    }
+}

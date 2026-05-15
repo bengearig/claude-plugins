@@ -1,0 +1,14 @@
+{
+  "name": "benjamin-gearig-marketplace",
+  "owner": {
+    "name": "Benjamin gearig",
+    "email": "contact@bengearig.com"
+  },
+  "plugins": [
+    {
+      "name": "verbing",
+      "source": "./plugins/verbing",
+      "description": "Appends custom verbs to Claude Code's action status spinner."
+    }
+  ]
+}
