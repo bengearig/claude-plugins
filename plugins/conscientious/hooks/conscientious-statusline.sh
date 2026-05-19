@@ -1,23 +1,30 @@
 #!/bin/bash
 # conscientious — combined statusline badge.
-# Reads both clarify and biblio flag files and prints:
-#   "Clarify: <STATE> | Biblio: <STATE>"
-# with each half independently colored:
+# Reads the clarify, biblio, and remind-me-propose flag files (plus the
+# per-project reminder count) and prints:
+#   "Clarify: <STATE> | Biblio: <STATE> | Reminders: <N> (Propose: <STATE>)"
+# with each state half independently colored:
 #   on   → green (active, encouraging)
 #   auto → grey  (neutral default)
 #   off  → red   (active suppression)
-# Separator is plain grey.
+# Separator is plain grey. Count is rendered in blue so it stands apart
+# visually from the on/auto/off semantics.
 #
 # Security posture mirrors clarify-statusline.sh: refuses symlinks, caps reads
-# at 8 bytes, lowercases, restricts to [a-z] before matching.
+# at 8 bytes, lowercases, restricts to [a-z] before matching. The reminder
+# count is obtained via the remind-me-store.js CLI so the JSON store stays
+# behind the same hardened reader used everywhere else.
 
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 CLAUDE_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
 CLARIFY_FLAG="$CLAUDE_DIR/.clarify-active"
 BIBLIO_FLAG="$CLAUDE_DIR/.biblio-active"
+PROPOSE_FLAG="$CLAUDE_DIR/.remind-me-propose-active"
 
 GREEN=$'\033[38;5;42m'
 GREY=$'\033[38;5;244m'
 RED=$'\033[38;5;196m'
+BLUE=$'\033[38;5;39m'
 RESET=$'\033[0m'
 
 # read_state <flag_path> <default_state>
@@ -40,6 +47,21 @@ read_state() {
     esac
 }
 
+# read_count
+# Echoes a non-negative integer for the current project's reminder count.
+# Falls back to 0 when node is unavailable or the CLI fails so the statusline
+# never disrupts the prompt over a transient I/O issue.
+read_count() {
+    if ! command -v node >/dev/null 2>&1; then
+        printf '0'
+        return
+    fi
+    local count
+    count=$(node "$SCRIPT_DIR/remind-me-store.js" count 2>/dev/null | tr -cd '0-9')
+    [ -z "$count" ] && count='0'
+    printf '%s' "$count"
+}
+
 # render_badge <label> <state>
 render_badge() {
     local label="$1"
@@ -58,7 +80,12 @@ render_badge() {
 
 CLARIFY_STATE=$(read_state "$CLARIFY_FLAG" "on")
 BIBLIO_STATE=$(read_state "$BIBLIO_FLAG" "auto")
+PROPOSE_STATE=$(read_state "$PROPOSE_FLAG" "on")
+REMINDER_COUNT=$(read_count)
 
 render_badge "Clarify" "$CLARIFY_STATE"
 printf '%s | %s' "$GREY" "$RESET"
 render_badge "Biblio" "$BIBLIO_STATE"
+printf '%s | %sReminders: %s%s%s (' "$GREY" "$GREY" "$BLUE" "$REMINDER_COUNT" "$GREY"
+render_badge "Propose" "$PROPOSE_STATE"
+printf '%s)%s' "$GREY" "$RESET"

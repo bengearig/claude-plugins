@@ -1,6 +1,6 @@
 {
   "name": "conscientious",
-  "description": "Tools that nudge Claude to be more conscientious. Features: /clarify (thorough clarifying questions in plan mode), /biblio (reference or ignore repo docs in plan mode).",
+  "description": "Tools that nudge Claude to be more conscientious. Features: /clarify (thorough clarifying questions in plan mode), /biblio (reference or ignore repo docs in plan mode), /remind-me (per-project saved tasks with menu recall + optional auto-propose).",
   "author": {
     "name": "Benjamin Gearig",
     "url": "https://github.com/bengearig"
@@ -31,6 +31,16 @@
         "hooks": [
           {
             "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/remind-me-propose-activate.js\"",
+            "timeout": 5,
+            "statusMessage": "Loading remind-me..."
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/conscientious-statusline-nudge.js\"",
             "timeout": 5
           }
@@ -52,6 +62,24 @@
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/biblio-mode-tracker.js\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/remind-me-propose-mode-tracker.js\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/remind-me-mode-context.js\"",
             "timeout": 5
           }
         ]

@@ -39,8 +39,8 @@ try {
         const snippet = '"statusLine": { "type": "command", "command": ' + JSON.stringify(command) + ', "refreshInterval": 1 }';
         process.stdout.write(
             'STATUSLINE SETUP NEEDED: The conscientious plugin includes a combined statusline badge ' +
-            '(e.g. "Clarify: ON | Biblio: AUTO") covering both /clarify and /biblio. It is not configured yet. ' +
-            'To enable, add this to ' + settingsPath + ': ' + snippet + ' ' +
+            '(e.g. "Clarify: ON | Biblio: AUTO | Reminders: 3 (Propose: ON)") covering /clarify, /biblio, and /remind-me. ' +
+            'It is not configured yet. To enable, add this to ' + settingsPath + ': ' + snippet + ' ' +
             'Proactively offer to set this up for the user on first interaction.'
         );
     }
