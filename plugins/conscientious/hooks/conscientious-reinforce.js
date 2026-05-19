@@ -11,6 +11,7 @@
 
 const FEATURES = [
     require('./clarify-reinforce'),
+    require('./biblio-reinforce'),
 ];
 
 let raw = '';
