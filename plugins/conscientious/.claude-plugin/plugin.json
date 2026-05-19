@@ -23,7 +23,16 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/clarify-prompt.js\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/clarify-mode-tracker.js\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/conscientious-reinforce.js\"",
             "timeout": 5
           }
         ]

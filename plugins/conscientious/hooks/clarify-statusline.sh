@@ -1,18 +1,26 @@
 #!/bin/bash
-# clarify — statusline badge. Reads the flag file and prints "Clarify: ON/OFF".
+# clarify — statusline badge. Reads the flag file and prints "Clarify: ON/AUTO/OFF".
+# Colors:
+#   on   → green (active, encouraging)
+#   auto → grey  (neutral default)
+#   off  → red   (active suppression)
 FLAG="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.clarify-active"
 
 # Refuse symlinks — a local attacker could point the flag at sensitive files
 # and have the statusline render their bytes to the terminal.
 [ -L "$FLAG" ] && exit 0
+
+# Missing flag → default ON (matches the plugin's documented default).
 [ ! -f "$FLAG" ] && { printf '\033[38;5;42mClarify: ON\033[0m'; exit 0; }
 
-# Cap read, strip control chars and anything outside [a-z].
+# Cap read at 8 bytes (longest legitimate value is "auto"), strip control
+# characters and anything outside [a-z].
 STATE=$(head -c 8 "$FLAG" 2>/dev/null | tr -d '\n\r' | tr '[:upper:]' '[:lower:]')
 STATE=$(printf '%s' "$STATE" | tr -cd 'a-z')
 
 case "$STATE" in
-  on)  printf '\033[38;5;42mClarify: ON\033[0m' ;;
-  off) printf '\033[38;5;244mClarify: OFF\033[0m' ;;
-  *)   exit 0 ;;
+  on)   printf '\033[38;5;42mClarify: ON\033[0m' ;;
+  auto) printf '\033[38;5;244mClarify: AUTO\033[0m' ;;
+  off)  printf '\033[38;5;196mClarify: OFF\033[0m' ;;
+  *)    exit 0 ;;
 esac
