@@ -9,6 +9,11 @@
       "name": "verbing",
       "source": "./plugins/verbing",
       "description": "Appends custom verbs to Claude Code's action status spinner."
+    },
+    {
+      "name": "conscientious",
+      "source": "./plugins/conscientious",
+      "description": "Tools that nudge Claude to be more conscientious. Features: /clarify (thorough clarifying questions in plan mode)."
     }
   ]
 }

@@ -1,0 +1,33 @@
+{
+  "name": "conscientious",
+  "description": "Tools that nudge Claude to be more conscientious. Features: /clarify (thorough clarifying questions in plan mode).",
+  "author": {
+    "name": "Benjamin Gearig",
+    "url": "https://github.com/bengearig"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/clarify-activate.js\"",
+            "timeout": 5,
+            "statusMessage": "Loading clarify..."
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/clarify-prompt.js\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
