@@ -26,7 +26,7 @@ try {
         }
     }
 
-    const current = settings.spinnerVerbs || { mode: 'append', verbs: [] };
+    const current = settings.spinnerVerbs || {mode: 'append', verbs: []};
     const existing = new Set(current.verbs || []);
     const toAdd = pluginVerbs.filter(v => !existing.has(v));
 
