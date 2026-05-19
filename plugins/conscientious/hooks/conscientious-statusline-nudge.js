@@ -33,7 +33,10 @@ try {
         const command = isWindows
             ? `powershell -ExecutionPolicy Bypass -File "${scriptPath}"`
             : `bash "${scriptPath}"`;
-        const snippet = '"statusLine": { "type": "command", "command": ' + JSON.stringify(command) + ' }';
+        // refreshInterval: 1 makes /clarify and /biblio state changes visible within 1s.
+        // Without it the statusline only refreshes on assistant turns, so a /clarify off
+        // (which the mode-tracker hook blocks before reaching Claude) leaves the badge stale.
+        const snippet = '"statusLine": { "type": "command", "command": ' + JSON.stringify(command) + ', "refreshInterval": 1 }';
         process.stdout.write(
             'STATUSLINE SETUP NEEDED: The conscientious plugin includes a combined statusline badge ' +
             '(e.g. "Clarify: ON | Biblio: AUTO") covering both /clarify and /biblio. It is not configured yet. ' +
