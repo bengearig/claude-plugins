@@ -44,6 +44,23 @@ The subject line should fit in ~72 characters. Use the body for context, the "wh
 
 Fork, branch, push, open a PR against `main`. The PR template will prompt for a summary and a test plan. Keep PRs focused — one logical change per PR.
 
+## Releases
+
+Plugins are versioned independently. Each plugin has a `version` field in its `plugins/<name>/.claude-plugin/plugin.json`, and releases are tagged `<plugin>/v<MAJOR>.<MINOR>.<PATCH>` (e.g. `conscientious/v0.2.0`).
+
+To cut a release:
+
+1. Bump `version` in the plugin's manifest.
+2. Move the relevant `## [Unreleased]` notes into a new dated section in `CHANGELOG.md` keyed `<plugin>/v<NEW> — <YYYY-MM-DD>`.
+3. Commit (`Release <plugin> 0.x.y`), then create an annotated tag:
+
+   ```
+   git tag -a <plugin>/v<NEW> -m "<plugin> <NEW>"
+   git push --tags
+   ```
+
+This repo does not publish GitHub Releases — tags are the source of truth.
+
 ## License
 
 By contributing you agree your contributions are licensed under the [MIT License](./LICENSE).
