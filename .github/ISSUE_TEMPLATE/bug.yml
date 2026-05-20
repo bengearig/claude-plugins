@@ -1,0 +1,56 @@
+name: Bug report
+description: Something in a plugin or the marketplace itself is broken.
+labels: ["bug"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: One or two sentences describing what's wrong.
+      placeholder: e.g. "The /clarify command saves the wrong mode when called with no arg."
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which area?
+      options:
+        - conscientious
+        - verbing
+        - marketplace (manifest, install flow)
+        - other / not sure
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps
+      description: Numbered list of exact steps to trigger the bug.
+      placeholder: |
+        1. Install the plugin
+        2. Run `/clarify`
+        3. Observe …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs actual
+      description: What you expected to happen, and what happened instead.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Claude Code version
+      description: Output of `claude --version`.
+      placeholder: e.g. 1.2.3
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS / platform
+      placeholder: e.g. macOS 14.5, Ubuntu 22.04, WSL2 on Windows 11
+    validations:
+      required: true

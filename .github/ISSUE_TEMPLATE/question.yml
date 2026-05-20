@@ -1,0 +1,25 @@
+name: Question
+description: Ask about usage, design, or behaviour that isn't covered by the README.
+labels: ["question"]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: What are you trying to do?
+      description: Describe the end goal, not just the immediate blocker.
+    validations:
+      required: true
+  - type: textarea
+    id: tried
+    attributes:
+      label: What have you tried?
+      description: Commands run, docs consulted, related issues searched.
+    validations:
+      required: true
+  - type: textarea
+    id: stuck
+    attributes:
+      label: Where are you stuck?
+      description: The specific point you can't get past. Include error output if any.
+    validations:
+      required: true
