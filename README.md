@@ -54,10 +54,12 @@ A SessionStart hook installs a stable launcher at `~/.claude/conscientious-statu
 The rendered badge looks like:
 
 ```
-Clarify: on | Biblio: auto | Reminders: 3 (Propose: on)
+Clarify: ON | Biblio: AUTO | Reminders: 3 (Propose: ON)
 ```
 
 Colors: green = `on`, grey = `auto`, red = `off`, blue = reminder count.
+
+![conscientious statusline updating live as /clarify, /biblio, and /remind-me are run](docs/demo.gif)
 
 ### Reminders
 
