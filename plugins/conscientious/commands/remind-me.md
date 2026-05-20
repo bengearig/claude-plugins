@@ -50,7 +50,7 @@ The first line is the project id (use it as `PID` below); the second line is the
 
 6. Present the sub-menu via `AskUserQuestion` (one question, three options):
    - Option **Send in <MODE> mode** — description: `Execute the saved prompt now, in whichever mode is active (Claude cannot switch modes).`
-   - Option **Modify prompt** — description: `Open the prompt in $EDITOR and save the edited version back.`
+   - Option **Modify prompt** — description: `Edit the saved prompt and save a new version.`
    - Option **Delete reminder** — description: `Remove this reminder from the per-project store.`
 
 7. Act on the chosen sub-menu option:
@@ -59,22 +59,36 @@ The first line is the project id (use it as `PID` below); the second line is the
    Acknowledge to the user briefly: e.g. `Executing reminder <title> in <MODE> mode.` Then begin working on the saved prompt as if the user had just sent it. Treat the `prompt` field's text as the new instructions for the rest of your turn.
 
    ### Modify prompt
-   Implement the editor flow:
+   Try the inline editor first; fall back to an external-editor flow if no controlling terminal is reachable. **`/dev/tty` is a magic device — it resolves at open time to the calling process's controlling terminal, and Claude Code's Bash tool typically spawns shells in a new session with none**, so the inline path will be skipped in most Claude Code environments.
+
    a. Use the Write tool to create a temp file at `/tmp/remind-me-<id>-<short-random>.txt` whose contents are exactly the existing `prompt` text (no surrounding JSON, no quotes).
-   b. Launch the user's editor with explicit TTY redirection:
+
+   b. Probe for a controlling terminal:
+      ```
+      : </dev/tty
+      ```
+      Exit 0 means inline editing will work; non-zero (typically `ENXIO`: `/dev/tty: No such device or address`) means it won't — skip to step d.
+
+   c. **Inline path** (only when step b exited 0). Launch the editor:
       ```
       "${EDITOR:-vi}" "/tmp/remind-me-<id>-<short-random>.txt" </dev/tty >/dev/tty 2>/dev/tty
       ```
-   c. If the bash command exits 0 and the file is non-empty, pipe the edited content to the CLI:
+      If the bash command exits 0 **and** the file is non-empty, pipe the edited content to the CLI:
       ```
       cat /tmp/remind-me-<id>-<short-random>.txt | node ${CLAUDE_PLUGIN_ROOT}/hooks/remind-me-store.js update <id>
       ```
-      Then `rm -f /tmp/remind-me-<id>-<short-random>.txt` and confirm `Updated reminder <title>.`
-   d. If the editor exits non-zero, the file becomes empty, or the bash invocation fails for any reason (e.g. no TTY available), **fall back** to a single `AskUserQuestion` asking the user to paste the replacement prompt:
-      - Question: `Editor unavailable. Paste the replacement prompt as Other, or keep the current text.`
-      - Options: `Keep current text` and `Replace via Other field`.
-      - If they choose `Other` with non-empty text, pipe that text on stdin to `update <id>` and confirm. If they choose `Keep current` or supply empty text, do nothing and tell them the prompt is unchanged.
-      - Always `rm -f /tmp/remind-me-<id>-*.txt` afterwards.
+      Confirm `Updated reminder <title>.` and go to step e. If the editor exits non-zero or the file is empty, fall through to step d.
+
+   d. **External path** (used when no controlling terminal is available, or the inline editor failed). Tell the user verbatim, substituting the actual path:
+      > Edit the prompt at `/tmp/remind-me-<id>-<short-random>.txt` in your own editor and save it, then pick **Done**.
+
+      Then present a single `AskUserQuestion`:
+      - Question: `Edited the file? Pick Done to save, or Nevermind to discard.`
+      - Options: `Done` (description: `Save the file's current contents as the new prompt.`) and `Nevermind` (description: `Leave the saved prompt unchanged.`).
+      - On **Done**: read the file. If empty, tell the user the prompt is unchanged. Otherwise pipe it to `update <id>` and confirm `Updated reminder <title>.`.
+      - On **Nevermind**: tell the user the prompt is unchanged.
+
+   e. Always `rm -f /tmp/remind-me-<id>-*.txt` afterwards — whether the update happened or not.
 
    ### Delete reminder
    Run:
