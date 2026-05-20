@@ -4,6 +4,24 @@ All notable changes to this project are documented here. Format follows [Keep a 
 
 ## [Unreleased]
 
+## conscientious/v1.0.0 — 2026-05-20
+
+### Added
+
+- `docs/demo.gif` — animated demo of the statusline badge updating as `/clarify`, `/biblio`, and `/remind-me` are run; embedded in the README `### Statusline` section.
+- `docs/CAPTURING_STATUSLINE.md` — maintainer recipe for re-capturing the demo GIF (`asciinema rec` → `agg`).
+
+### Changed
+
+- README `### Statusline` example now matches the live UPPERCASE rendering (`Clarify: ON | Biblio: AUTO | Reminders: 3 (Propose: ON)`).
+- Marks the plugin's surface (`/clarify`, `/biblio`, `/remind-me`, `/remind-me-propose`, statusline badge) as stable.
+
+## verbing/v1.0.0 — 2026-05-20
+
+### Changed
+
+- Marks the plugin as stable; no behavior changes since v0.1.0.
+
 ## conscientious/v0.1.0 — 2026-05-20
 
 ### Added

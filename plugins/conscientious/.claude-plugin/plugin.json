@@ -1,6 +1,6 @@
 {
   "name": "conscientious",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Tools that nudge Claude to be more conscientious. Features: /clarify (thorough clarifying questions in plan mode), /biblio (reference or ignore repo docs in plan mode), /remind-me (per-project saved tasks with menu recall + optional auto-propose).",
   "author": {
     "name": "Benjamin Gearig",
