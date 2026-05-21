@@ -4,6 +4,12 @@ All notable changes to this project are documented here. Format follows [Keep a 
 
 ## [Unreleased]
 
+## verbing/v1.1.0 — 2026-05-21
+
+### Added
+
+- Four new spinner verbs in `plugins/verbing/verbs.json`: Crab swirling, Ideating, Foosballing, Spline reticulating.
+
 ## conscientious/v1.0.0 — 2026-05-20
 
 ### Added
