@@ -4,6 +4,12 @@ All notable changes to this project are documented here. Format follows [Keep a 
 
 ## [Unreleased]
 
+## verbing/v1.2.0 — 2026-05-22
+
+### Added
+
+- Four new spinner verbs in `plugins/verbing/verbs.json`: Jigglebillying, Munching, Let there be lighting, Kindling.
+
 ## verbing/v1.1.0 — 2026-05-21
 
 ### Added
