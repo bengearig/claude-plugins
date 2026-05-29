@@ -4,6 +4,12 @@ All notable changes to this project are documented here. Format follows [Keep a 
 
 ## [Unreleased]
 
+## verbing/v1.3.0 — 2026-05-29
+
+### Added
+
+- New spinner verb in `plugins/verbing/verbs.json`: Big McDumbo-ing.
+
 ## verbing/v1.2.0 — 2026-05-22
 
 ### Added
