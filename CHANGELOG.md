@@ -4,6 +4,17 @@ All notable changes to this project are documented here. Format follows [Keep a 
 
 ## [Unreleased]
 
+## conscientious/v1.1.0 — 2026-08-10
+
+### Added
+
+- `/taciturn` command — `on|off` toggle for comment discipline, defaulting to **on**. **on** tells Claude to comment only where there is genuine ambiguity or non-obvious context, and to keep any necessary comment terse; **off** asks for generous commenting. Unlike `/clarify` and `/biblio` the directive is not gated on plan mode, since comment style applies while editing.
+- `Taciturn: <STATE>` segment in the combined statusline badge (bash and PowerShell), between `Biblio` and `Reminders`.
+
+### Notes
+
+- `/taciturn` deliberately has no `auto` state, unlike the other three toggles: injecting no directive is indistinguishable from `off`, so the middle state carried no behavior. `/taciturn auto` answers with a short explanation instead of an error, and a flag file left reading `auto` by a pre-release build is normalised to `on`.
+
 ## verbing/v1.3.0 — 2026-05-29
 
 ### Added

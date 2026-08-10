@@ -1,10 +1,10 @@
 # conscientious — combined statusline badge (PowerShell sibling of conscientious-statusline.sh).
-# Reads the clarify, biblio, and remind-me-propose flag files (plus the
+# Reads the clarify, biblio, taciturn, and remind-me-propose flag files (plus the
 # per-project reminder count via remind-me-store.js) and prints:
-#   "Clarify: <STATE> | Biblio: <STATE> | Reminders: <N> (Propose: <STATE>)"
+#   "Clarify: <STATE> | Biblio: <STATE> | Taciturn: <STATE> | Reminders: <N> (Propose: <STATE>)"
 # with each state half independently colored:
 #   on   → green (active, encouraging)
-#   auto → grey  (neutral default)
+#   auto → grey  (neutral default; taciturn has no auto state)
 #   off  → red   (active suppression)
 # Separator is plain grey. Count is rendered in blue so it stands apart from
 # the on/auto/off semantics.
@@ -18,6 +18,7 @@ $ScriptDir   = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ClaudeDir   = if ($env:CLAUDE_CONFIG_DIR) { $env:CLAUDE_CONFIG_DIR } else { Join-Path $HOME ".claude" }
 $ClarifyFlag = Join-Path $ClaudeDir ".clarify-active"
 $BiblioFlag  = Join-Path $ClaudeDir ".biblio-active"
+$TaciturnFlag = Join-Path $ClaudeDir ".taciturn-active"
 $ProposeFlag = Join-Path $ClaudeDir ".remind-me-propose-active"
 
 $Esc   = [char]27
@@ -97,12 +98,19 @@ function Write-Badge {
 
 $ClarifyState  = Read-StateFromFlag -FlagPath $ClarifyFlag -DefaultState 'on'
 $BiblioState   = Read-StateFromFlag -FlagPath $BiblioFlag  -DefaultState 'auto'
+# Taciturn is on/off only. Read-StateFromFlag's whitelist is shared, so map a
+# pre-release "auto" onto the replacement default rather than rendering a state
+# the feature no longer has. taciturn-activate rewrites the file next session.
+$TaciturnState = Read-StateFromFlag -FlagPath $TaciturnFlag -DefaultState 'on'
+if ($TaciturnState -eq 'auto') { $TaciturnState = 'on' }
 $ProposeState  = Read-StateFromFlag -FlagPath $ProposeFlag -DefaultState 'on'
 $ReminderCount = Read-ReminderCount
 
 Write-Badge -Label 'Clarify' -State $ClarifyState
 [Console]::Write("${Grey} | ${Reset}")
 Write-Badge -Label 'Biblio' -State $BiblioState
+[Console]::Write("${Grey} | ${Reset}")
+Write-Badge -Label 'Taciturn' -State $TaciturnState
 [Console]::Write("${Grey} | ${Grey}Reminders: ${Blue}${ReminderCount}${Grey} (")
 Write-Badge -Label 'Propose' -State $ProposeState
 [Console]::Write("${Grey})${Reset}")

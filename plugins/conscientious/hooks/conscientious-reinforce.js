@@ -12,6 +12,7 @@
 const FEATURES = [
     require('./clarify-reinforce'),
     require('./biblio-reinforce'),
+    require('./taciturn-reinforce'),
     require('./remind-me-propose-reinforce'),
 ];
 

@@ -1,11 +1,11 @@
 #!/bin/bash
 # conscientious — combined statusline badge.
-# Reads the clarify, biblio, and remind-me-propose flag files (plus the
+# Reads the clarify, biblio, taciturn, and remind-me-propose flag files (plus the
 # per-project reminder count) and prints:
-#   "Clarify: <STATE> | Biblio: <STATE> | Reminders: <N> (Propose: <STATE>)"
+#   "Clarify: <STATE> | Biblio: <STATE> | Taciturn: <STATE> | Reminders: <N> (Propose: <STATE>)"
 # with each state half independently colored:
 #   on   → green (active, encouraging)
-#   auto → grey  (neutral default)
+#   auto → grey  (neutral default; taciturn has no auto state)
 #   off  → red   (active suppression)
 # Separator is plain grey. Count is rendered in blue so it stands apart
 # visually from the on/auto/off semantics.
@@ -19,6 +19,7 @@ SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 CLAUDE_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
 CLARIFY_FLAG="$CLAUDE_DIR/.clarify-active"
 BIBLIO_FLAG="$CLAUDE_DIR/.biblio-active"
+TACITURN_FLAG="$CLAUDE_DIR/.taciturn-active"
 PROPOSE_FLAG="$CLAUDE_DIR/.remind-me-propose-active"
 
 GREEN=$'\033[38;5;42m'
@@ -80,12 +81,19 @@ render_badge() {
 
 CLARIFY_STATE=$(read_state "$CLARIFY_FLAG" "on")
 BIBLIO_STATE=$(read_state "$BIBLIO_FLAG" "auto")
+# Taciturn is on/off only. read_state's whitelist is shared, so map a
+# pre-release "auto" onto the replacement default rather than rendering a state
+# the feature no longer has. taciturn-activate rewrites the file next session.
+TACITURN_STATE=$(read_state "$TACITURN_FLAG" "on")
+[ "$TACITURN_STATE" = "auto" ] && TACITURN_STATE="on"
 PROPOSE_STATE=$(read_state "$PROPOSE_FLAG" "on")
 REMINDER_COUNT=$(read_count)
 
 render_badge "Clarify" "$CLARIFY_STATE"
 printf '%s | %s' "$GREY" "$RESET"
 render_badge "Biblio" "$BIBLIO_STATE"
+printf '%s | %s' "$GREY" "$RESET"
+render_badge "Taciturn" "$TACITURN_STATE"
 printf '%s | %sReminders: %s%s%s (' "$GREY" "$GREY" "$BLUE" "$REMINDER_COUNT" "$GREY"
 render_badge "Propose" "$PROPOSE_STATE"
 printf '%s)%s' "$GREY" "$RESET"
