@@ -14,7 +14,7 @@ All notable changes to this project are documented here. Format follows [Keep a 
 
 - `plugins/verbing/verbs.json` is now pretty-printed one verb per line, so future additions show up as a one-line diff.
 
-## conscientious/v1.1.0 — 2026-08-12
+## conscientious/v1.1.0 — 2026-08-10
 
 ### Added
 
