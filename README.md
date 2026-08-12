@@ -3,7 +3,7 @@
 Benjamin Gearig's [Claude Code](https://claude.com/claude-code) plugin marketplace. Ships two plugins:
 
 - **verbing** — extra verbs for the Claude Code spinner
-- **conscientious** — working-style nudges (`/clarify`, `/biblio`, `/taciturn`, `/remind-me`) plus a combined statusline badge
+- **conscientious** — working-style nudges (`/clarify`, `/biblio`, `/taciturn`, `/fastidious`, `/remind-me`) plus a combined statusline badge
 
 ## Install
 
@@ -26,7 +26,7 @@ Appends custom spinner verbs (Watsoning, Zooting, Manifesting, …) via a Sessio
 
 ## conscientious
 
-Five commands plus a statusline badge that surface plan-mode hygiene, comment discipline, and per-project reminders.
+Six commands plus a statusline badge that surface plan-mode hygiene, comment discipline, thoroughness, and per-project reminders.
 
 ### Commands
 
@@ -35,14 +35,15 @@ Five commands plus a statusline badge that surface plan-mode hygiene, comment di
 | `/clarify` | `on \| auto \| off` | `on` | Whether Claude asks thorough clarifying questions in plan mode |
 | `/biblio` | `on \| auto \| off` | `auto` | Whether Claude reads repo docs (READMEs, `*.md`, docstrings) while planning |
 | `/taciturn` | `on \| off` | `on` | Whether Claude keeps code comments minimal — only for real ambiguity or non-obvious context, and terse when needed |
+| `/fastidious` | `on \| off` | `off` | Whether Claude plans, implements, and verifies exhaustively — thorough within the requested scope, not beyond it |
 | `/remind-me` | `[task description]` | — | No arg → list+menu of saved tasks; with arg → save a new task |
 | `/remind-me-propose` | `on \| auto \| off` | `on` | Whether Claude offers `/remind-me <…>` when it spots out-of-scope work |
 
 Most toggles have three states: **on** (apply the directive), **auto** (no directive — let Claude behave normally), **off** (apply the opposite directive). Modes are saved per-project; current state is visible in the statusline.
 
-`/taciturn` is the exception: it is **on**/**off** only, and defaults to **on**. There is no useful middle state, because "inject no directive" and "comment normally" are the same behavior — **off** covers it.
+`/taciturn` and `/fastidious` are the exceptions: both are **on**/**off** only. They drop the middle state for opposite reasons. `/taciturn` defaults to **on**, and its **off** injects the *opposite* directive (comment generously) — "inject no directive" and "comment normally" are the same behavior, so **off** already covers what **auto** would have. `/fastidious` defaults to **off**, and its **off** injects *nothing* — it is the neutral state the other toggles spell **auto**, so there is no opposing "be sloppy" directive to add.
 
-`/clarify` and `/biblio` only take effect in plan mode. `/taciturn` and `/remind-me-propose` apply on every turn — comment style and out-of-scope work both matter while Claude is executing, not just while it plans.
+`/clarify` and `/biblio` only take effect in plan mode. `/taciturn`, `/fastidious`, and `/remind-me-propose` apply on every turn — comment style, rigor, and out-of-scope work all matter while Claude is executing, not just while it plans.
 
 ### Statusline
 
@@ -59,7 +60,7 @@ A SessionStart hook installs a stable launcher at `~/.claude/conscientious-statu
 The rendered badge looks like:
 
 ```
-Clarify: ON | Biblio: AUTO | Taciturn: ON | Reminders: 3 (Propose: ON)
+Clarify: ON | Biblio: AUTO | Taciturn: ON | Fastidious: OFF | Reminders: 3 (Propose: ON)
 ```
 
 Colors: green = `on`, grey = `auto`, red = `off`, blue = reminder count.

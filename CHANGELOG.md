@@ -4,6 +4,18 @@ All notable changes to this project are documented here. Format follows [Keep a 
 
 ## [Unreleased]
 
+## conscientious/v1.2.0 — 2026-08-12
+
+### Added
+
+- `/fastidious` command — `on|off` toggle for thoroughness, defaulting to **off**. **on** asks Claude to research exhaustively while planning, implement meticulously (error paths, edge cases, surrounding conventions, no placeholders), and verify before reporting anything done. The directive is bounded to the requested scope, and is not gated on plan mode since rigor applies while editing.
+- `Fastidious: <STATE>` segment in the combined statusline badge (bash and PowerShell), between `Taciturn` and `Reminders`.
+
+### Notes
+
+- Like `/taciturn`, `/fastidious` has no `auto` state — but for the opposite reason. Its **off** injects *nothing* rather than an opposing directive, so **off** already is the neutral state the three-state toggles spell `auto`. `/fastidious auto` answers with a short explanation instead of an error, and an `auto` hand-written into the flag file renders as `off`.
+- The `on` directive explicitly disclaims code comments so it does not contend with `/taciturn`, which is injected into the same `additionalContext` block.
+
 ## verbing/v1.4.0 — 2026-08-12
 
 ### Added

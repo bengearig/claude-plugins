@@ -13,7 +13,7 @@
     {
       "name": "conscientious",
       "source": "./plugins/conscientious",
-      "description": "Tools that nudge Claude to be more conscientious. Features: /clarify (thorough clarifying questions in plan mode), /biblio (reference or ignore repo docs in plan mode), /taciturn (keep code comments minimal and terse), /remind-me (per-project saved tasks with menu recall + optional auto-propose)."
+      "description": "Tools that nudge Claude to be more conscientious. Features: /clarify (thorough clarifying questions in plan mode), /biblio (reference or ignore repo docs in plan mode), /taciturn (keep code comments minimal and terse), /fastidious (plan, implement, and verify exhaustively), /remind-me (per-project saved tasks with menu recall + optional auto-propose)."
     }
   ]
 }

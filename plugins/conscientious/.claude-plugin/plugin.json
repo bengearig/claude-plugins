@@ -1,7 +1,7 @@
 {
   "name": "conscientious",
-  "version": "1.1.0",
-  "description": "Tools that nudge Claude to be more conscientious. Features: /clarify (thorough clarifying questions in plan mode), /biblio (reference or ignore repo docs in plan mode), /taciturn (keep code comments minimal and terse), /remind-me (per-project saved tasks with menu recall + optional auto-propose).",
+  "version": "1.2.0",
+  "description": "Tools that nudge Claude to be more conscientious. Features: /clarify (thorough clarifying questions in plan mode), /biblio (reference or ignore repo docs in plan mode), /taciturn (keep code comments minimal and terse), /fastidious (plan, implement, and verify exhaustively), /remind-me (per-project saved tasks with menu recall + optional auto-propose).",
   "author": {
     "name": "Benjamin Gearig",
     "url": "https://github.com/bengearig"
@@ -35,6 +35,16 @@
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/taciturn-activate.js\"",
             "timeout": 5,
             "statusMessage": "Loading taciturn..."
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/fastidious-activate.js\"",
+            "timeout": 5,
+            "statusMessage": "Loading fastidious..."
           }
         ]
       },
@@ -82,6 +92,15 @@
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/taciturn-mode-tracker.js\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/fastidious-mode-tracker.js\"",
             "timeout": 5
           }
         ]

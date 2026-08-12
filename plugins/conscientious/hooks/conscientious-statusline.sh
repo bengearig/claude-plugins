@@ -1,11 +1,11 @@
 #!/bin/bash
 # conscientious — combined statusline badge.
-# Reads the clarify, biblio, taciturn, and remind-me-propose flag files (plus the
-# per-project reminder count) and prints:
-#   "Clarify: <STATE> | Biblio: <STATE> | Taciturn: <STATE> | Reminders: <N> (Propose: <STATE>)"
+# Reads the clarify, biblio, taciturn, fastidious, and remind-me-propose flag
+# files (plus the per-project reminder count) and prints:
+#   "Clarify: <STATE> | Biblio: <STATE> | Taciturn: <STATE> | Fastidious: <STATE> | Reminders: <N> (Propose: <STATE>)"
 # with each state half independently colored:
 #   on   → green (active, encouraging)
-#   auto → grey  (neutral default; taciturn has no auto state)
+#   auto → grey  (neutral default; taciturn and fastidious have no auto state)
 #   off  → red   (active suppression)
 # Separator is plain grey. Count is rendered in blue so it stands apart
 # visually from the on/auto/off semantics.
@@ -20,6 +20,7 @@ CLAUDE_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
 CLARIFY_FLAG="$CLAUDE_DIR/.clarify-active"
 BIBLIO_FLAG="$CLAUDE_DIR/.biblio-active"
 TACITURN_FLAG="$CLAUDE_DIR/.taciturn-active"
+FASTIDIOUS_FLAG="$CLAUDE_DIR/.fastidious-active"
 PROPOSE_FLAG="$CLAUDE_DIR/.remind-me-propose-active"
 
 GREEN=$'\033[38;5;42m'
@@ -86,6 +87,9 @@ BIBLIO_STATE=$(read_state "$BIBLIO_FLAG" "auto")
 # the feature no longer has. taciturn-activate rewrites the file next session.
 TACITURN_STATE=$(read_state "$TACITURN_FLAG" "on")
 [ "$TACITURN_STATE" = "auto" ] && TACITURN_STATE="on"
+# Fastidious is on/off only for the same reason, so normalize it the same way.
+FASTIDIOUS_STATE=$(read_state "$FASTIDIOUS_FLAG" "off")
+[ "$FASTIDIOUS_STATE" = "auto" ] && FASTIDIOUS_STATE="off"
 PROPOSE_STATE=$(read_state "$PROPOSE_FLAG" "on")
 REMINDER_COUNT=$(read_count)
 
@@ -94,6 +98,8 @@ printf '%s | %s' "$GREY" "$RESET"
 render_badge "Biblio" "$BIBLIO_STATE"
 printf '%s | %s' "$GREY" "$RESET"
 render_badge "Taciturn" "$TACITURN_STATE"
+printf '%s | %s' "$GREY" "$RESET"
+render_badge "Fastidious" "$FASTIDIOUS_STATE"
 printf '%s | %sReminders: %s%s%s (' "$GREY" "$GREY" "$BLUE" "$REMINDER_COUNT" "$GREY"
 render_badge "Propose" "$PROPOSE_STATE"
 printf '%s)%s' "$GREY" "$RESET"

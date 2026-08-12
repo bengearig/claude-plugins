@@ -139,7 +139,7 @@ function buildSnippet(suggestedCommand) {
 function emitSetup(snippet) {
     process.stdout.write(
         'STATUSLINE SETUP NEEDED: The conscientious plugin includes a combined statusline badge ' +
-        '(e.g. "Clarify: ON | Biblio: AUTO | Taciturn: ON | Reminders: 3 (Propose: ON)") covering /clarify, /biblio, /taciturn, and /remind-me. ' +
+        '(e.g. "Clarify: ON | Biblio: AUTO | Taciturn: ON | Fastidious: OFF | Reminders: 3 (Propose: ON)") covering /clarify, /biblio, /taciturn, /fastidious, and /remind-me. ' +
         'It is not configured yet. To enable, add this to ' + settingsPath + ': ' + snippet + ' ' +
         'Proactively offer to set this up for the user on first interaction.'
     );
