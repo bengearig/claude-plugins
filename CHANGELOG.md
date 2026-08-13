@@ -4,6 +4,19 @@ All notable changes to this project are documented here. Format follows [Keep a 
 
 ## [Unreleased]
 
+## conscientious/v1.4.0 — 2026-08-13
+
+### Added
+
+- **Directives** — always-on reinforcements with no toggle, no flag file, and no statusline segment. `conscientious-reinforce.js` now aggregates a `DIRECTIVES` list alongside `FEATURES`, appending directive blocks after the configured ones. New directives are added by dropping a `<name>-directive.js` next to the `*-reinforce.js` modules and listing it.
+- First directive, *drift-resistant prose* (`drift-resistant-directive.js`) — Claude avoids wording comments and documentation around details the next edit invalidates: counts, enumerations, line numbers, ordinal positions, and `currently N` phrasing. "The five Authentication routes are built" becomes "The Authentication routes are built"; "the five places anything is registered" becomes "wherever anything is registered".
+- README `### Directives` section documenting the distinction and how to add one.
+
+### Notes
+
+- The directive scopes itself to how prose is worded rather than how much of it there is, so it does not contend with `/taciturn` in the same `additionalContext` block, and it exempts prose that deliberately records a fixed moment — changelog entries like this one.
+- A directive module that throws is dropped in isolation by the aggregator's existing per-module `try`/`catch`; the remaining blocks still emit.
+
 ## conscientious/v1.3.0 — 2026-08-13
 
 ### Added

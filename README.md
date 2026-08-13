@@ -26,7 +26,7 @@ Appends custom spinner verbs (Watsoning, Zooting, Manifesting, …) via a Sessio
 
 ## conscientious
 
-Seven commands plus a statusline badge that surface plan-mode hygiene, comment discipline, thoroughness, commit-message altitude, and per-project reminders.
+Slash commands plus a statusline badge that surface plan-mode hygiene, comment discipline, thoroughness, commit-message altitude, and per-project reminders — plus always-on directives that take no configuration at all.
 
 ### Commands
 
@@ -47,6 +47,18 @@ Most toggles have three states: **on** (apply the directive), **auto** (no direc
 `/synoptic` keeps all three states but swaps the roles of the last two. Its **off** is the silent one that injects nothing (there is no useful "commit verbosely" directive to hang off it), and its **auto** is an *active, softer* mode: still one-line commit subjects with no body, but a repository's own documented commit convention wins where the two conflict. Under **on**, `/synoptic` overrides that convention. So in the statusline, a grey `AUTO` here reads as "synoptic, repo permitting" rather than "neutral default."
 
 `/clarify` and `/biblio` only take effect in plan mode. `/taciturn`, `/fastidious`, `/synoptic`, and `/remind-me-propose` apply on every turn — comment style, rigor, commit messages, and out-of-scope work all matter while Claude is executing, not just while it plans.
+
+### Directives
+
+Some nudges are worth applying unconditionally, so they ship as **directives** rather than commands. A directive has no toggle, no flag file, and no statusline segment — it is injected on every turn alongside whatever the commands above are set to.
+
+| Directive | Effect |
+| --- | --- |
+| Drift-resistant prose | Claude avoids wording comments and documentation around details the next edit invalidates — counts, enumerations, line numbers, ordinals, `currently N`. "The five Authentication routes are built" becomes "The Authentication routes are built"; "the five places anything is registered" becomes "wherever anything is registered". Exact figures survive only where the figure is the point. |
+
+Directives govern *wording*, not volume — `/taciturn` still decides how much you get. Prose that deliberately records a fixed moment, such as a changelog entry, is exempt.
+
+To add one, create `plugins/conscientious/hooks/<name>-directive.js` exporting `getReinforcement(input)` and list it in `DIRECTIVES` in `conscientious-reinforce.js`.
 
 ### Statusline
 
