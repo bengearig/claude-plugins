@@ -1,11 +1,13 @@
 # conscientious — combined statusline badge (PowerShell sibling of conscientious-statusline.sh).
-# Reads the clarify, biblio, taciturn, fastidious, and remind-me-propose flag
-# files (plus the per-project reminder count via remind-me-store.js) and prints:
-#   "Clarify: <STATE> | Biblio: <STATE> | Taciturn: <STATE> | Fastidious: <STATE> | Reminders: <N> (Propose: <STATE>)"
+# Reads the clarify, biblio, taciturn, fastidious, synoptic, and
+# remind-me-propose flag files (plus the per-project reminder count via
+# remind-me-store.js) and prints:
+#   "Clarify: <STATE> | Biblio: <STATE> | Taciturn: <STATE> | Fastidious: <STATE> | Synoptic: <STATE> | Reminders: <N> (Propose: <STATE>)"
 # with each state half independently colored:
 #   on   → green (active, encouraging)
-#   auto → grey  (neutral default; taciturn and fastidious have no auto state)
-#   off  → red   (active suppression)
+#   auto → grey  (neutral default; taciturn and fastidious have no auto state,
+#                 and synoptic's auto is an active mode rather than a default)
+#   off  → red   (active suppression; for synoptic, off is the silent state)
 # Separator is plain grey. Count is rendered in blue so it stands apart from
 # the on/auto/off semantics.
 #
@@ -20,6 +22,7 @@ $ClarifyFlag = Join-Path $ClaudeDir ".clarify-active"
 $BiblioFlag  = Join-Path $ClaudeDir ".biblio-active"
 $TaciturnFlag = Join-Path $ClaudeDir ".taciturn-active"
 $FastidiousFlag = Join-Path $ClaudeDir ".fastidious-active"
+$SynopticFlag = Join-Path $ClaudeDir ".synoptic-active"
 $ProposeFlag = Join-Path $ClaudeDir ".remind-me-propose-active"
 
 $Esc   = [char]27
@@ -107,6 +110,9 @@ if ($TaciturnState -eq 'auto') { $TaciturnState = 'on' }
 # Fastidious is on/off only for the same reason, so normalize it the same way.
 $FastidiousState = Read-StateFromFlag -FlagPath $FastidiousFlag -DefaultState 'off'
 if ($FastidiousState -eq 'auto') { $FastidiousState = 'off' }
+# Synoptic keeps all three states, so no normalization — but note its off is the
+# silent state and its auto is an active directive, the reverse of clarify/biblio.
+$SynopticState = Read-StateFromFlag -FlagPath $SynopticFlag -DefaultState 'off'
 $ProposeState  = Read-StateFromFlag -FlagPath $ProposeFlag -DefaultState 'on'
 $ReminderCount = Read-ReminderCount
 
@@ -117,6 +123,8 @@ Write-Badge -Label 'Biblio' -State $BiblioState
 Write-Badge -Label 'Taciturn' -State $TaciturnState
 [Console]::Write("${Grey} | ${Reset}")
 Write-Badge -Label 'Fastidious' -State $FastidiousState
+[Console]::Write("${Grey} | ${Reset}")
+Write-Badge -Label 'Synoptic' -State $SynopticState
 [Console]::Write("${Grey} | ${Grey}Reminders: ${Blue}${ReminderCount}${Grey} (")
 Write-Badge -Label 'Propose' -State $ProposeState
 [Console]::Write("${Grey})${Reset}")

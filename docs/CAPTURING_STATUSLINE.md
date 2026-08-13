@@ -6,7 +6,7 @@ The GIF is not generated automatically. This doc is the recipe for re-capturing 
 
 ## Prerequisites
 
-- A terminal that supports 256-color ANSI (the statusline uses `\033[38;5;Nm` escapes — see [`../plugins/conscientious/hooks/conscientious-statusline.sh`](../plugins/conscientious/hooks/conscientious-statusline.sh) lines 24–28).
+- A terminal that supports 256-color ANSI (the statusline uses `\033[38;5;Nm` escapes — see [`../plugins/conscientious/hooks/conscientious-statusline.sh`](../plugins/conscientious/hooks/conscientious-statusline.sh) lines 28–31).
 - The conscientious plugin enabled locally so `~/.claude/conscientious-statusline.sh` exists. If it doesn't, start a new Claude Code session — the plugin's SessionStart hook installs it.
 - For the GIF: `asciinema` (`pip install asciinema`, `brew install asciinema`, …) plus a `.cast` → `.gif` converter such as [`agg`](https://github.com/asciinema/agg) (`brew install agg` / `cargo install --git https://github.com/asciinema/agg`).
 

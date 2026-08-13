@@ -14,6 +14,7 @@ const FEATURES = [
     require('./biblio-reinforce'),
     require('./taciturn-reinforce'),
     require('./fastidious-reinforce'),
+    require('./synoptic-reinforce'),
     require('./remind-me-propose-reinforce'),
 ];
 

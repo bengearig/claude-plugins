@@ -4,6 +4,23 @@ All notable changes to this project are documented here. Format follows [Keep a 
 
 ## [Unreleased]
 
+## conscientious/v1.3.0 — 2026-08-13
+
+### Added
+
+- `/synoptic` command — `on|auto|off` toggle for commit-message altitude, defaulting to **off**. **on** asks Claude to write each commit message as a single-line, fewest-words summary carrying the birds-eye macro overview of the work, with no body (required trailers excepted). **auto** applies the same directive but yields to a repository's own documented commit convention. Not gated on plan mode, since commit messages are written while executing.
+- `Synoptic: <STATE>` segment in the combined statusline badge (bash and PowerShell), between `Fastidious` and `Reminders`.
+
+### Notes
+
+- `/synoptic` keeps the three-state shape of `/clarify` and `/biblio` but swaps the roles of `auto` and `off`. Its **off** injects *nothing* — the neutral state the older toggles spell `auto` — because there is no useful opposing "commit verbosely" directive. Its **auto** is therefore an active, softer mode rather than a default, and a grey `AUTO` in the statusline reads as "synoptic, repo permitting."
+- The directive explicitly scopes itself to the commit message, disclaiming any effect on how thoroughly the work is done or reported in conversation, so it does not contend with `/fastidious` in the same `additionalContext` block.
+- Under **on** the directive overrides a repository's documented commit convention, including this repo's own `CONTRIBUTING.md` guidance to use the commit body for context. Use **auto** to keep the repo's convention authoritative.
+
+### Fixed
+
+- `docs/CAPTURING_STATUSLINE.md` cross-reference to the ANSI escape definitions in `conscientious-statusline.sh`, which had gone stale by two lines in v1.2.0 and shifts again here.
+
 ## conscientious/v1.2.0 — 2026-08-12
 
 ### Added

@@ -1,12 +1,13 @@
 #!/bin/bash
 # conscientious — combined statusline badge.
-# Reads the clarify, biblio, taciturn, fastidious, and remind-me-propose flag
-# files (plus the per-project reminder count) and prints:
-#   "Clarify: <STATE> | Biblio: <STATE> | Taciturn: <STATE> | Fastidious: <STATE> | Reminders: <N> (Propose: <STATE>)"
+# Reads the clarify, biblio, taciturn, fastidious, synoptic, and
+# remind-me-propose flag files (plus the per-project reminder count) and prints:
+#   "Clarify: <STATE> | Biblio: <STATE> | Taciturn: <STATE> | Fastidious: <STATE> | Synoptic: <STATE> | Reminders: <N> (Propose: <STATE>)"
 # with each state half independently colored:
 #   on   → green (active, encouraging)
-#   auto → grey  (neutral default; taciturn and fastidious have no auto state)
-#   off  → red   (active suppression)
+#   auto → grey  (neutral default; taciturn and fastidious have no auto state,
+#                 and synoptic's auto is an active mode rather than a default)
+#   off  → red   (active suppression; for synoptic, off is the silent state)
 # Separator is plain grey. Count is rendered in blue so it stands apart
 # visually from the on/auto/off semantics.
 #
@@ -21,6 +22,7 @@ CLARIFY_FLAG="$CLAUDE_DIR/.clarify-active"
 BIBLIO_FLAG="$CLAUDE_DIR/.biblio-active"
 TACITURN_FLAG="$CLAUDE_DIR/.taciturn-active"
 FASTIDIOUS_FLAG="$CLAUDE_DIR/.fastidious-active"
+SYNOPTIC_FLAG="$CLAUDE_DIR/.synoptic-active"
 PROPOSE_FLAG="$CLAUDE_DIR/.remind-me-propose-active"
 
 GREEN=$'\033[38;5;42m'
@@ -90,6 +92,9 @@ TACITURN_STATE=$(read_state "$TACITURN_FLAG" "on")
 # Fastidious is on/off only for the same reason, so normalize it the same way.
 FASTIDIOUS_STATE=$(read_state "$FASTIDIOUS_FLAG" "off")
 [ "$FASTIDIOUS_STATE" = "auto" ] && FASTIDIOUS_STATE="off"
+# Synoptic keeps all three states, so no normalization — but note its off is the
+# silent state and its auto is an active directive, the reverse of clarify/biblio.
+SYNOPTIC_STATE=$(read_state "$SYNOPTIC_FLAG" "off")
 PROPOSE_STATE=$(read_state "$PROPOSE_FLAG" "on")
 REMINDER_COUNT=$(read_count)
 
@@ -100,6 +105,8 @@ printf '%s | %s' "$GREY" "$RESET"
 render_badge "Taciturn" "$TACITURN_STATE"
 printf '%s | %s' "$GREY" "$RESET"
 render_badge "Fastidious" "$FASTIDIOUS_STATE"
+printf '%s | %s' "$GREY" "$RESET"
+render_badge "Synoptic" "$SYNOPTIC_STATE"
 printf '%s | %sReminders: %s%s%s (' "$GREY" "$GREY" "$BLUE" "$REMINDER_COUNT" "$GREY"
 render_badge "Propose" "$PROPOSE_STATE"
 printf '%s)%s' "$GREY" "$RESET"

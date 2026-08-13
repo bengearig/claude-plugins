@@ -3,7 +3,7 @@
 Benjamin Gearig's [Claude Code](https://claude.com/claude-code) plugin marketplace. Ships two plugins:
 
 - **verbing** — extra verbs for the Claude Code spinner
-- **conscientious** — working-style nudges (`/clarify`, `/biblio`, `/taciturn`, `/fastidious`, `/remind-me`) plus a combined statusline badge
+- **conscientious** — working-style nudges (`/clarify`, `/biblio`, `/taciturn`, `/fastidious`, `/synoptic`, `/remind-me`) plus a combined statusline badge
 
 ## Install
 
@@ -26,7 +26,7 @@ Appends custom spinner verbs (Watsoning, Zooting, Manifesting, …) via a Sessio
 
 ## conscientious
 
-Six commands plus a statusline badge that surface plan-mode hygiene, comment discipline, thoroughness, and per-project reminders.
+Seven commands plus a statusline badge that surface plan-mode hygiene, comment discipline, thoroughness, commit-message altitude, and per-project reminders.
 
 ### Commands
 
@@ -36,14 +36,17 @@ Six commands plus a statusline badge that surface plan-mode hygiene, comment dis
 | `/biblio` | `on \| auto \| off` | `auto` | Whether Claude reads repo docs (READMEs, `*.md`, docstrings) while planning |
 | `/taciturn` | `on \| off` | `on` | Whether Claude keeps code comments minimal — only for real ambiguity or non-obvious context, and terse when needed |
 | `/fastidious` | `on \| off` | `off` | Whether Claude plans, implements, and verifies exhaustively — thorough within the requested scope, not beyond it |
+| `/synoptic` | `on \| auto \| off` | `off` | Whether Claude writes commit messages as one-line birds-eye summaries in as few words as possible, with no body |
 | `/remind-me` | `[task description]` | — | No arg → list+menu of saved tasks; with arg → save a new task |
 | `/remind-me-propose` | `on \| auto \| off` | `on` | Whether Claude offers `/remind-me <…>` when it spots out-of-scope work |
 
-Most toggles have three states: **on** (apply the directive), **auto** (no directive — let Claude behave normally), **off** (apply the opposite directive). Modes are saved per-project; current state is visible in the statusline.
+Most toggles have three states: **on** (apply the directive), **auto** (no directive — let Claude behave normally), **off** (apply the opposite directive). Modes are saved per-project; current state is visible in the statusline. `/taciturn`, `/fastidious`, and `/synoptic` each depart from that scheme, as described below.
 
-`/taciturn` and `/fastidious` are the exceptions: both are **on**/**off** only. They drop the middle state for opposite reasons. `/taciturn` defaults to **on**, and its **off** injects the *opposite* directive (comment generously) — "inject no directive" and "comment normally" are the same behavior, so **off** already covers what **auto** would have. `/fastidious` defaults to **off**, and its **off** injects *nothing* — it is the neutral state the other toggles spell **auto**, so there is no opposing "be sloppy" directive to add.
+`/taciturn` and `/fastidious` are **on**/**off** only. They drop the middle state for opposite reasons. `/taciturn` defaults to **on**, and its **off** injects the *opposite* directive (comment generously) — "inject no directive" and "comment normally" are the same behavior, so **off** already covers what **auto** would have. `/fastidious` defaults to **off**, and its **off** injects *nothing* — it is the neutral state the other toggles spell **auto**, so there is no opposing "be sloppy" directive to add.
 
-`/clarify` and `/biblio` only take effect in plan mode. `/taciturn`, `/fastidious`, and `/remind-me-propose` apply on every turn — comment style, rigor, and out-of-scope work all matter while Claude is executing, not just while it plans.
+`/synoptic` keeps all three states but swaps the roles of the last two. Its **off** is the silent one that injects nothing (there is no useful "commit verbosely" directive to hang off it), and its **auto** is an *active, softer* mode: still one-line commit subjects with no body, but a repository's own documented commit convention wins where the two conflict. Under **on**, `/synoptic` overrides that convention. So in the statusline, a grey `AUTO` here reads as "synoptic, repo permitting" rather than "neutral default."
+
+`/clarify` and `/biblio` only take effect in plan mode. `/taciturn`, `/fastidious`, `/synoptic`, and `/remind-me-propose` apply on every turn — comment style, rigor, commit messages, and out-of-scope work all matter while Claude is executing, not just while it plans.
 
 ### Statusline
 
@@ -60,7 +63,7 @@ A SessionStart hook installs a stable launcher at `~/.claude/conscientious-statu
 The rendered badge looks like:
 
 ```
-Clarify: ON | Biblio: AUTO | Taciturn: ON | Fastidious: OFF | Reminders: 3 (Propose: ON)
+Clarify: ON | Biblio: AUTO | Taciturn: ON | Fastidious: OFF | Synoptic: OFF | Reminders: 3 (Propose: ON)
 ```
 
 Colors: green = `on`, grey = `auto`, red = `off`, blue = reminder count.
