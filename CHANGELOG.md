@@ -4,6 +4,12 @@ All notable changes to this project are documented here. Format follows [Keep a 
 
 ## [Unreleased]
 
+## conscientious/v1.4.1 — 2026-08-13
+
+### Changed
+
+- `/synoptic` — both active modes now forbid the trailing attribution line (`Co-Authored-By` and friends) instead of exempting it as a required trailer. The single summary line is the entire commit message, overriding a system instruction, tool default, or repo convention that asks for the trailer. Under **auto** the repository still wins on body and format; the attribution ban does not yield.
+
 ## conscientious/v1.4.0 — 2026-08-13
 
 ### Added

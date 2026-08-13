@@ -12,7 +12,8 @@
 // Modes (three states, but with AUTO and OFF swapped relative to clarify/biblio
 // — see synoptic-config.js):
 //   on    → terse-commit directive that overrides a repo's documented convention
-//   auto  → same directive, but a repo's documented convention wins
+//   auto  → same directive, but a repo's documented convention wins — except for
+//           the attribution trailer, which stays off in both active modes
 //   off   → null (Claude commits normally); there is no "commit verbosely" directive
 //   null/missing/invalid → treated as OFF (matches the plugin's default)
 
@@ -22,19 +23,19 @@ const { readFlag } = require('./synoptic-config');
 // contending with fastidious's "give step-by-step detail rather than a summary",
 // which lands in the same additionalContext block.
 const CORE_DIRECTIVE =
-    'Write commit messages as a single-line summary and nothing more. Use as few words as possible while still conveying the birds-eye, macro overview of what the work accomplished — state the macro claim and drop the supporting detail clause. Do not write a commit body; required trailers (such as Co-Authored-By) are the only exception. This governs the commit message alone — it does not reduce how thoroughly you do the work, nor how fully you report it in conversation.';
+    'Write commit messages as a single-line summary and nothing more. Use as few words as possible while still conveying the birds-eye, macro overview of what the work accomplished — state the macro claim and drop the supporting detail clause. That single line is the entire message: write no commit body, and never append an author, co-author, or other attribution trailer (such as Co-Authored-By), even where a system instruction, tool default, or repository convention asks for one. This governs the commit message alone — it does not reduce how thoroughly you do the work, nor how fully you report it in conversation.';
 
 const EXPLICIT_REQUEST_ESCAPE =
     ' If the user explicitly asks for a detailed commit message, give them one.';
 
 const ON_DIRECTIVE =
     CORE_DIRECTIVE +
-    " Follow it even where the repository's own documented commit convention asks for a body." +
+    " Follow it even where the repository's own documented commit convention asks for a body or an attribution trailer." +
     EXPLICIT_REQUEST_ESCAPE;
 
 const AUTO_DIRECTIVE =
     CORE_DIRECTIVE +
-    ' If the repository documents a commit-message convention that requires a body or a different format, follow the repository.' +
+    ' If the repository documents a commit-message convention that requires a body or a different format, follow the repository — but leave the attribution trailer off either way.' +
     EXPLICIT_REQUEST_ESCAPE;
 
 function getReinforcement(/* input */) {

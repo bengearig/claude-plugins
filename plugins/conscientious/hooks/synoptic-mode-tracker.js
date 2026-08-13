@@ -18,8 +18,8 @@
 const { safeWriteFlag, readFlag } = require('./synoptic-config');
 
 const BEHAVIOR = {
-    on:   "I'll write commit messages as one-line birds-eye summaries in as few words as possible.",
-    auto: "I'll write one-line birds-eye commit messages unless the repo documents its own convention.",
+    on:   "I'll write commit messages as one-line birds-eye summaries in as few words as possible, with no co-author line.",
+    auto: "I'll write one-line birds-eye commit messages with no co-author line, unless the repo documents its own convention.",
     off:  "I'll write commit messages normally.",
 };
 
