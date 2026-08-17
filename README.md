@@ -3,7 +3,7 @@
 Benjamin Gearig's [Claude Code](https://claude.com/claude-code) plugin marketplace. Ships two plugins:
 
 - **verbing** — extra verbs for the Claude Code spinner
-- **conscientious** — working-style nudges (`/clarify`, `/biblio`, `/taciturn`, `/fastidious`, `/synoptic`, `/remind-me`) plus a combined statusline badge
+- **conscientious** — working-style nudges (`/clarify`, `/biblio`, `/taciturn`, `/fastidious`, `/synoptic`, `/remind-me`, `/standup`) plus a combined statusline badge
 
 ## Install
 
@@ -26,7 +26,7 @@ Appends custom spinner verbs (Watsoning, Zooting, Manifesting, …) via a Sessio
 
 ## conscientious
 
-Slash commands plus a statusline badge that surface plan-mode hygiene, comment discipline, thoroughness, commit-message altitude, and per-project reminders — plus always-on directives that take no configuration at all.
+Slash commands plus a statusline badge that surface plan-mode hygiene, comment discipline, thoroughness, commit-message altitude, per-project reminders, and standup summaries — plus always-on directives that take no configuration at all.
 
 ### Commands
 
@@ -39,6 +39,7 @@ Slash commands plus a statusline badge that surface plan-mode hygiene, comment d
 | `/synoptic` | `on \| auto \| off` | `off` | Whether Claude writes commit messages as one-line birds-eye summaries in as few words as possible, with no body and no attribution trailer |
 | `/remind-me` | `[task description]` | — | No arg → list+menu of saved tasks; with arg → save a new task |
 | `/remind-me-propose` | `on \| auto \| off` | `on` | Whether Claude offers `/remind-me <…>` when it spots out-of-scope work |
+| `/standup` | `[TODAY \| PREVIOUS \| YYYY-MM-DD] [max]` | — | Summarizes your commits for one day as standup bullets, capped at `max` (default 5) |
 
 Most toggles have three states: **on** (apply the directive), **auto** (no directive — let Claude behave normally), **off** (apply the opposite directive). Modes are saved per-project; current state is visible in the statusline. `/taciturn`, `/fastidious`, and `/synoptic` each depart from that scheme, as described below.
 
@@ -86,6 +87,25 @@ Colors: green = `on`, grey = `auto`, red = `off`, blue = reminder count.
 ### Reminders
 
 Reminders are stored per-project at `~/.claude/.remind-me/<projectId>.json` (mode `0600`, atomic writes, symlinks refused). Each entry has a title, the original task description, and a generated pickup prompt suitable for a fresh Claude session. `/remind-me` with no arg shows a menu to **send**, **modify**, or **delete** any reminder.
+
+### Standup
+
+`/standup` reads one day out of the current repository's history and turns it into bullets you can read aloud to your team. Both arguments are optional and order-independent:
+
+| Argument | Meaning |
+| --- | --- |
+| `TODAY` | Today, in the machine's local timezone. The default |
+| `PREVIOUS` | The most recent *earlier* day that actually has commits by you — not simply the previous weekday, so a day off is skipped rather than reported as empty |
+| `YYYY-MM-DD` | That exact date. Must be a real calendar date, and not in the future |
+| A number | How many bullets at most. Defaults to 5 |
+
+So `/standup` covers today in five bullets, `/standup PREVIOUS 3` covers your last working day in three, and `/standup 2026-08-16` covers that date.
+
+Commits are matched on your `git config user.email`, compared exactly, and searched across branches, tags, and remote-tracking refs rather than just the checked-out branch — so work on a branch you have since left still counts. Stash and notes refs are deliberately excluded, since both generate commits in your name that are not work.
+
+Days are grouped by *author* date, so rebasing or amending later does not move work onto the wrong day, and that timestamp is read in your machine's local timezone — evening work committed inside a UTC container stays on the evening you did it. Merge commits are not summarized, though a day consisting only of merges says so instead of reporting nothing. A day with no commits of yours is reported as such rather than quietly replaced by a different one. When the resolved day is today, anything still uncommitted in the working tree is noted after the bullets.
+
+The summary is written at outcome level — what changed and why it mattered — and deliberately omits commit hashes, filenames, and branch names.
 
 ## License
 

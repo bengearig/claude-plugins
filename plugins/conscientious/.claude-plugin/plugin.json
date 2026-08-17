@@ -1,7 +1,7 @@
 {
   "name": "conscientious",
-  "version": "1.5.0",
-  "description": "Tools that nudge Claude to be more conscientious. Features: /clarify (thorough clarifying questions in plan mode), /biblio (reference or ignore repo docs in plan mode), /taciturn (keep code comments minimal and terse), /fastidious (plan, implement, and verify exhaustively), /synoptic (one-line birds-eye commit messages), /remind-me (per-project saved tasks with menu recall + optional auto-propose). Always-on directives (no toggle, not in the statusline): drift-resistant comments and documentation, and sycophancy-resistant response tone.",
+  "version": "1.6.0",
+  "description": "Tools that nudge Claude to be more conscientious. Features: /clarify (thorough clarifying questions in plan mode), /biblio (reference or ignore repo docs in plan mode), /taciturn (keep code comments minimal and terse), /fastidious (plan, implement, and verify exhaustively), /synoptic (one-line birds-eye commit messages), /remind-me (per-project saved tasks with menu recall + optional auto-propose), /standup (summarize a day's commits as standup bullets). Always-on directives (no toggle, not in the statusline): drift-resistant comments and documentation, and sycophancy-resistant response tone.",
   "author": {
     "name": "Benjamin Gearig",
     "url": "https://github.com/bengearig"

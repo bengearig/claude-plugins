@@ -4,6 +4,26 @@ All notable changes to this project are documented here. Format follows [Keep a 
 
 ## [Unreleased]
 
+## conscientious/v1.6.0 — 2026-08-17
+
+### Added
+
+- `/standup` command — summarizes one day of your commits in the current repository as bullets for a team standup. Both arguments are optional and order-independent: a day (`TODAY`, `PREVIOUS`, or `YYYY-MM-DD`, defaulting to `TODAY`) and a bullet cap (defaulting to 5). `PREVIOUS` resolves to the most recent *earlier* day that actually has commits by you, so a day off is skipped rather than reported as empty.
+- `standup-range.js` — the CLI behind it, resolving the day and collecting commits deterministically so the model only writes prose. Like `remind-me-store.js` it is invoked from the command markdown rather than registered as a hook.
+- README `### Standup` section documenting the argument forms and the matching rules.
+
+### Notes
+
+- Only the second command that does work rather than setting a mode, after `/remind-me`. It has no flag file, no activate hook, no mode tracker, and no statusline segment — there is no state to hold between turns, and nothing to render in a badge.
+- Commits are matched on `git config user.email` compared exactly. Git's own `--author` is a substring *regex* rather than an equality test, so the pre-filter passes `--fixed-strings` and the exact comparison happens afterward; without that, an address containing `.` or `+` matches more authors than intended.
+- Days are grouped by author date rather than commit date, so a later rebase or amend does not move work onto the wrong day, and the author timestamp is converted to the machine's local day before bucketing. Grouping by the offset recorded in the commit instead would put evening work onto tomorrow for anyone committing inside a UTC container — the common devcontainer and CI default — where it would then fall out of both `TODAY` and `PREVIOUS`.
+- Stash and notes refs are excluded. `--all` covers everything under `refs/`, so `git stash push -u` alone contributes two machine-generated commits authored by you and timestamped now, which is enough to fabricate a whole standup.
+- `.mailmap` rewriting is turned off for the lookup. `log.mailmap` defaults to true, and in a repository whose mailmap remaps your address, `--author` matches nothing at all — reporting a silent, confident "no commits" on a day you worked.
+- Merge commits are not summarized, but a day holding only merges says so rather than reporting nothing, and `PREVIOUS` walks past such a day to one with real commits.
+- A commit whose author date is in the future is excluded with a note rather than folded into today. Clock skew on a suspended VM is the usual cause, and silently relabelling it would invent work that did not happen.
+- A day with no commits is reported plainly and exits successfully. Substituting a nearby day would put a date in front of the team that does not match the work being described.
+- Attribution trailers are stripped from commit bodies before summarizing. A body consisting only of a `Co-Authored-By` line would otherwise reach the summarizer as though it were the rationale for the change.
+
 ## conscientious/v1.5.0 — 2026-08-17
 
 ### Added
