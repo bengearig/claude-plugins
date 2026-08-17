@@ -27,6 +27,7 @@ const FEATURES = [
 
 const DIRECTIVES = [
     require('./drift-resistant-directive'),
+    require('./sycophancy-resistant-directive'),
 ];
 
 let raw = '';

@@ -4,6 +4,26 @@ All notable changes to this project are documented here. Format follows [Keep a 
 
 ## [Unreleased]
 
+## conscientious/v1.5.0 — 2026-08-17
+
+### Added
+
+- Directive *sycophancy-resistant tone* (`sycophancy-resistant-directive.js`) — Claude no longer opens a response by praising the question, idea, or plan ("Great question", "Good catch"), reserves exclamation points for what genuinely warrants one, and no longer closes with unsolicited encouragement or a morale line. Always on: no toggle, no flag file, no statusline segment.
+- README `### Directives` table row for it.
+
+### Changed
+
+- README prose under the directives table no longer frames directives as governing wording alone, now that one of them governs conversational register instead.
+
+### Notes
+
+- The directive scopes itself to conversational register and disclaims code, comments, documentation, commit messages, and text the user dictated verbatim, so it does not contend with `/taciturn`, `/fastidious`, `/synoptic`, or `/remind-me-propose` in the same `additionalContext` block.
+- It carves out judgments the user actually asked for, so what it suppresses is reflexive flattery rather than candid assessment — an approach that is sound is still called sound.
+
+### Fixed
+
+- `docs/CAPTURING_STATUSLINE.md` now points at the ANSI color variable definitions in `conscientious-statusline.sh` by name rather than by line number, so the cross-reference stops going stale — the same drift that was patched in v1.3.0 and would have recurred on the next edit to that script.
+
 ## conscientious/v1.4.1 — 2026-08-13
 
 ### Changed

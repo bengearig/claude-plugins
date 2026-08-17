@@ -55,8 +55,9 @@ Some nudges are worth applying unconditionally, so they ship as **directives** r
 | Directive | Effect |
 | --- | --- |
 | Drift-resistant prose | Claude avoids wording comments and documentation around details the next edit invalidates — counts, enumerations, line numbers, ordinals, `currently N`. "The five Authentication routes are built" becomes "The Authentication routes are built"; "the five places anything is registered" becomes "wherever anything is registered". Exact figures survive only where the figure is the point. |
+| Sycophancy-resistant tone | Claude does not open by praising the question, idea, or plan, reserves exclamation points for what genuinely warrants one, and does not close with unsolicited encouragement. Judgments the user asked for are unaffected — sound is called sound, unsound unsound. |
 
-Directives govern *wording*, not volume — `/taciturn` still decides how much you get. Prose that deliberately records a fixed moment, such as a changelog entry, is exempt.
+Directives stay in their lane: they govern how prose is worded and how a reply is pitched, never how much work you get or how fully it is reported — `/taciturn`, `/fastidious`, and `/synoptic` still decide that. Prose that deliberately records a fixed moment, such as a changelog entry, is exempt from the drift-resistance rule.
 
 To add one, create `plugins/conscientious/hooks/<name>-directive.js` exporting `getReinforcement(input)` and list it in `DIRECTIVES` in `conscientious-reinforce.js`.
 
